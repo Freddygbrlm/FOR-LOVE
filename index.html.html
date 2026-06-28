@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Petualangan Kata — Sebuah Misi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #faf8f5;
+            --bg-alt: #f3efe9;
+            --text: #2c2416;
+            --text-light: #5c5242;
+            --text-muted: #8a7e6b;
+            --accent: #b8973e;
+            --accent-soft: #d4c5a0;
+            --accent-dark: #8b6914;
+            --gold-gradient: linear-gradient(135deg, #c9a84c, #b8973e, #a07828);
+            --card-bg: #ffffff;
+            --shadow-sm: 0 2px 20px rgba(44, 36, 22, 0.04);
+            --shadow-md: 0 8px 40px rgba(44, 36, 22, 0.07);
+            --shadow-lg: 0 20px 60px rgba(44, 36, 22, 0.1);
+            --border: rgba(44, 36, 22, 0.08);
+            --radius: 16px;
+            --transition: 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --font-display: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+            --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+            --warning: #c44536;
+            --warning-bg: rgba(196, 69, 54, 0.06);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.8;
+            min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            transition: background-color 0.6s ease;
+        }
+
+        .bg-ornament {
+            position: fixed;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.03;
+            font-size: 28rem;
+            font-family: var(--font-display);
+            color: var(--accent);
+            user-select: none;
+        }
+        .bg-ornament.top-right {
+            top: -8rem;
+            right: -6rem;
+            transform: rotate(15deg);
+        }
+        .bg-ornament.bottom-left {
+            bottom: -10rem;
+            left: -5rem;
+            transform: rotate(-10deg);
+        }
+
+        .particles-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: var(--accent-soft);
+            opacity: 0;
+            animation: floatUp 8s infinite ease-in;
+        }
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.5;
+            }
+            50% {
+                opacity: 0.2;
+            }
+            100% {
+                transform: translateY(-10vh) scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        .nav-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 1.2rem 2rem;
+            transition: all var(--transition);
+        }
+        .nav-wrapper.scrolled {
+            background: rgba(250, 248, 245, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: var(--shadow-sm);
+            padding: 0.8rem 2rem;
+        }
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .nav-brand {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text);
+            letter-spacing: 0.03em;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        .nav-brand:hover {
+            color: var(--accent-dark);
+        }
+        .nav-brand .brand-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--gold-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 0.3rem;
+            background: var(--card-bg);
+            border-radius: 50px;
+            padding: 0.4rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+        }
+        .nav-links li a {
+            text-decoration: none;
+            color: var(--text-light);
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 0.6rem 1.3rem;
+            border-radius: 50px;
+            transition: all 0.35s ease;
+            letter-spacing: 0.02em;
+            display: block;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .nav-links li a:hover {
+            color: var(--accent-dark);
+            background: rgba(184, 151, 62, 0.06);
+        }
+        .nav-links li a.active {
+            background: var(--gold-gradient);
+            color: #fff;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(184, 151, 62, 0.35);
+        }
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            z-index: 101;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .nav-toggle span {
+            display: block;
+            width: 26px;
+            height: 2px;
+            background: var(--text);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .main-container {
+            position: relative;
+            z-index: 1;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 7rem 2rem 4rem;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .page {
+            display: none;
+            width: 100%;
+            animation: fadeSlideIn 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+        .page.active {
+            display: block;
+        }
+        @keyframes fadeSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .content-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 3.5rem 3rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+        .content-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: var(--gold-gradient);
+            border-radius: 0 0 4px 4px;
+        }
+        .content-card .page-number {
+            display: inline-block;
+            font-family: var(--font-display);
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            color: var(--accent);
+            text-transform: uppercase;
+            margin-bottom: 1.2rem;
+            background: rgba(184, 151, 62, 0.07);
+            padding: 0.4rem 1.2rem;
+            border-radius: 50px;
+        }
+        .content-card h1 {
+            font-family: var(--font-display);
+            font-size: 2.8rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.8rem;
+            letter-spacing: 0.02em;
+            line-height: 1.3;
+        }
+        .content-card h2 {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            font-weight: 500;
+            color: var(--text);
+            margin-bottom: 1.5rem;
+            font-style: italic;
+            letter-spacing: 0.02em;
+        }
+        .content-card .divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1.8rem 0;
+        }
+        .divider .line {
+            width: 50px;
+            height: 1px;
+            background: var(--accent-soft);
+        }
+        .divider .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent);
+        }
+        .content-card p {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            max-width: 650px;
+            margin: 0 auto 1rem;
+            line-height: 2;
+            letter-spacing: 0.01em;
+        }
+        .content-card .quote-block {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-style: italic;
+            color: var(--text);
+            line-height: 1.7;
+            margin: 2rem 0;
+            padding: 1.5rem 2rem;
+            background: var(--bg-alt);
+            border-radius: 12px;
+            border-left: 3px solid var(--accent);
+            position: relative;
+            text-align: left;
+        }
+        .quote-block::before {
+            content: '"';
+            position: absolute;
+            top: -1rem;
+            left: 1rem;
+            font-size: 5rem;
+            color: var(--accent-soft);
+            opacity: 0.4;
+            font-family: var(--font-display);
+            line-height: 1;
+        }
+        .content-card .highlight {
+            color: var(--accent-dark);
+            font-weight: 600;
+        }
+        .content-card .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 2rem;
+            text-align: left;
+        }
+        .grid-2 .mini-card {
+            background: var(--bg-alt);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+        .grid-2 .mini-card:hover {
+            border-color: var(--accent-soft);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+        .mini-card h3 {
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+        .mini-card p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .warning-text {
+            background: var(--warning-bg);
+            color: var(--warning);
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 0.04em;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            display: inline-block;
+            margin-top: 1.2rem;
+            border: 1px solid rgba(196, 69, 54, 0.15);
+            text-transform: uppercase;
+        }
+
+        .sub-text {
+            font-style: italic;
+            color: var(--text-muted);
+            margin-top: 1rem;
+            font-size: 1rem;
+        }
+
+        .signature {
+            font-family: var(--font-display);
+            font-style: italic;
+            font-size: 1.3rem;
+            color: var(--accent);
+            margin-top: 1.5rem;
+            letter-spacing: 0.04em;
+        }
+
+        .site-footer {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            letter-spacing: 0.04em;
+        }
+        .site-footer span {
+            color: var(--accent);
+        }
+
+        @media (max-width: 768px) {
+            .nav-wrapper {
+                padding: 0.8rem 1rem;
+            }
+            .nav-wrapper.scrolled {
+                padding: 0.6rem 1rem;
+            }
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 280px;
+                height: 100vh;
+                flex-direction: column;
+                background: var(--card-bg);
+                border-radius: 0;
+                padding: 5rem 2rem 2rem;
+                gap: 0.5rem;
+                box-shadow: var(--shadow-lg);
+                transition: right 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+                z-index: 100;
+                border: none;
+                border-left: 1px solid var(--border);
+            }
+            .nav-links.open {
+                right: 0;
+            }
+            .nav-links li a {
+                border-radius: 8px;
+                padding: 0.8rem 1.2rem;
+                font-size: 1rem;
+            }
+            .nav-toggle {
+                display: flex;
+            }
+            .content-card {
+                padding: 2.5rem 1.5rem;
+            }
+            .content-card h1 {
+                font-size: 2rem;
+            }
+            .content-card h2 {
+                font-size: 1.3rem;
+            }
+            .content-card .quote-block {
+                font-size: 1.2rem;
+                padding: 1.2rem 1.5rem;
+            }
+            .content-card .grid-2 {
+                grid-template-columns: 1fr;
+            }
+            .bg-ornament {
+                font-size: 14rem;
+            }
+            .main-container {
+                padding: 6rem 1rem 3rem;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .content-card h1 {
+                font-size: 1.6rem;
+            }
+            .content-card p {
+                font-size: 0.95rem;
+            }
+            .nav-brand {
+                font-size: 1.2rem;
+            }
+            .nav-brand .brand-icon {
+                width: 28px;
+                height: 28px;
+                font-size: 0.7rem;
+            }
+        }
+
+        .nav-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 99;
+        }
+        .nav-overlay.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-ornament top-right" aria-hidden="true">&#10087;</div>
+    <div class="bg-ornament bottom-left" aria-hidden="true">&#10086;</div>
+    <div class="particles-container" id="particles" aria-hidden="true"></div>
+    <div class="nav-overlay" id="navOverlay"></div>
+
+    <nav class="nav-wrapper" id="navbar">
+        <div class="nav-inner">
+            <a class="nav-brand" onclick="navigateTo('beranda')" title="Kembali ke Beranda">
+                <span class="brand-icon">JM</span>
+                Jejak Makna
+            </a>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="nav-links" id="navLinks">
+                <li><a onclick="navigateTo('beranda')" data-page="beranda" class="active">Halaman 1</a></li>
+                <li><a onclick="navigateTo('tentang')" data-page="tentang">Halaman 2</a></li>
+                <li><a onclick="navigateTo('renungan')" data-page="renungan">Halaman 3</a></li>
+                <li><a onclick="navigateTo('inspirasi')" data-page="inspirasi">Halaman 4</a></li>
+                <li><a onclick="navigateTo('kontak')" data-page="kontak">Halaman 5</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-container" id="mainContainer">
+        <!-- Halaman 1 -->
+        <section class="page active" id="page-beranda">
+            <div class="content-card">
+                <span class="page-number">Halaman 01</span>
+                <h1>Petunjuk Pertama</h1>
+                <div class="divider"><span class="line"></span><span class="dot"></span><span class="line"></span></div>
+                <div class="quote-block">
+                    “Halo sayangg, seru tidakk? hehehe, tolong dibaca ya petunjuknya dengan baik. Sebelum menentukan lokasinya dimana, km coba kebawah bawa kunci motormu, dan buka jok motormu, jikalau sudah di ambil lanjut ke halaman berikutnya.”
+                </div>
+                <div class="warning-text">⚠️ JANGAN DI LANJUT KE HALAMAN BERIKUTNYA JIKA BELUM MENYELESAIKAN HALAMAN INI.</div>
+            </div>
+        </section>
+
+        <!-- Halaman 2 -->
+        <section class="page" id="page-tentang">
+            <div class="content-card">
+                <span class="page-number">Halaman 02</span>
+                <h1>Ambil dan Siapkan</h1>
+                <div class="divider"><span class="line"></span><span class="dot"></span><span class="line"></span></div>
+                <div class="quote-block">
+                    “Halo sudah dapat apa yang ada di dalam jok motormu? tolong ya kak untuk di jadikan itu ya, buat kita bawa nanti. Setelah selesai menjadikan dan memasukkan barang itu ke tempat kotak ungu itu, mari kerjakan soal setelah ini yaaa hehehe.”
+                </div>
+                <div class="warning-text">⚠️ JANGAN DI LANJUT KE HALAMAN BERIKUTNYA JIKA BELUM MENYELESAIKAN HALAMAN INI.</div>
+            </div>
+        </section>
+
+        <!-- Halaman 3 -->
+        <section class="page" id="page-renungan">
+            <div class="content-card">
+                <span class="page-number">Halaman 03</span>
+                <h1>Soal Penentu</h1>
+                <div class="divider"><span class="line"></span><span class="dot"></span><span class="line"></span></div>
+                <div class="quote-block">
+                    “Kamu bisa tau lokasi pasti yang akan kita kunjungi jika berhasil menjawab soal berikut ini.”
+                </div>
+                <p class="sub-text">Terima kasih telah meluangkan waktu sejenak untuk menyatu dengan alam. Semoga hatimu seterang pagi di hutan.</p>
+            </div>
+        </section>
+
+        <!-- Halaman 4 -->
+        <section class="page" id="page-inspirasi">
+            <div class="content-card">
+                <span class="page-number">Halaman 04</span>
+                <h1>Pecahkan Kode</h1>
+                <div class="divider"><span class="line"></span><span class="dot"></span><span class="line"></span></div>
+                <div class="quote-block" style="font-size:1.3rem; word-break: break-word;">
+                    “https://www.instagram.com/########## # (pagar) yang ada link itu harus kamu ubah menjadi huruf, mengubah nya dengan apa? dengan jawaban soal berikut. <br><br> A= 1, B=2  C=3 Z=26 dan seterusnya, jadi huruf apakah jika angka ini 11-1-12-5-12-15-3-1-12-5 hasil tersebut km bisa tambahkan di link dan kamu copypaste di WA aku lalu kirim, dan klik link nya, atau bisa km buka langsung di google.”
+                </div>
+                <p class="sub-text">Semangat sayangg.</p>
+            </div>
+        </section>
+
+        <!-- Halaman 5 -->
+        <section class="page" id="page-kontak">
+            <div class="content-card">
+                <span class="page-number">Halaman 05</span>
+                <h1>Persiapan Akhir</h1>
+                <div class="divider"><span class="line"></span><span class="dot"></span><span class="line"></span></div>
+                <div class="quote-block">
+                    “siapkan baju buat disana ya, kataku gausah rapih rapih, nanti berkeringat juga hehehe, aku pake baju kemeja biru sama atasan celana pantai yg coklat yg km punya juga.”
+                </div>
+                <p class="sub-text">Mazmur 19:1.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <p>&copy; 2024 <span>Jejak Makna</span> — Sebuah misi kecil penuh makna. Dibuat dengan ❤️ untuk langkah yang berarti.</p>
+    </footer>
+
+    <script>
+        (function createParticles() {
+            const container = document.getElementById('particles');
+            const count = 18;
+            for (let i = 0; i < count; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                const size = Math.random() * 6 + 3;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 8 + 's';
+                particle.style.animationDuration = Math.random() * 6 + 7 + 's';
+                container.appendChild(particle);
+            }
+        })();
+
+        const pages = document.querySelectorAll('.page');
+        const navLinks = document.querySelectorAll('.nav-links li a');
+        const navToggle = document.getElementById('navToggle');
+        const navLinksContainer = document.getElementById('navLinks');
+        const navOverlay = document.getElementById('navOverlay');
+        const navbar = document.getElementById('navbar');
+
+        function navigateTo(pageName) {
+            pages.forEach(page => page.classList.remove('active'));
+            const targetPage = document.getElementById('page-' + pageName);
+            if (targetPage) {
+                targetPage.classList.add('active');
+                targetPage.style.animation = 'none';
+                targetPage.offsetHeight;
+                targetPage.style.animation = 'fadeSlideIn 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards';
+            }
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('data-page') === pageName) {
+                    link.classList.add('active');
+                }
+            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            closeMobileMenu();
+            if (history.pushState) {
+                history.pushState(null, null, '#' + pageName);
+            }
+        }
+
+        function closeMobileMenu() {
+            navLinksContainer.classList.remove('open');
+            navOverlay.classList.remove('show');
+        }
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const pageName = this.getAttribute('data-page');
+                navigateTo(pageName);
+            });
+        });
+
+        navToggle.addEventListener('click', () => {
+            const isOpen = navLinksContainer.classList.contains('open');
+            if (isOpen) {
+                closeMobileMenu();
+            } else {
+                navLinksContainer.classList.add('open');
+                navOverlay.classList.add('show');
+            }
+        });
+
+        navOverlay.addEventListener('click', closeMobileMenu);
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeMobileMenu();
+        });
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 40) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        function handleHash() {
+            const hash = window.location.hash.replace('#', '');
+            const validPages = ['beranda', 'tentang', 'renungan', 'inspirasi', 'kontak'];
+            if (validPages.includes(hash)) {
+                navigateTo(hash);
+            }
+        }
+        window.addEventListener('hashchange', handleHash);
+        if (window.location.hash) {
+            handleHash();
+        }
+
+        console.log('%c🌿 Jejak Makna %c— Misi Kata %cDimulai.',
+            'font-size:1.2em;color:#b8973e;',
+            'font-size:1.2em;color:#2c2416;',
+            'color:#8a7e6b;');
+        console.log('%c✨ Ikuti petunjuk setiap halaman dengan saksama ya.',
+            'color:#5c5242;font-style:italic;');
+    </script>
+</body>
+</html>
